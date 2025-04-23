@@ -33,11 +33,18 @@ namespace WebApi.Controllers
 				return BadRequest("Bu email zaten kayıtlı.");
 			}
 
+			var roleName = string.IsNullOrEmpty(dto.RoleName) ? "User" : dto.RoleName;
+
+			var role = _context.Roles.FirstOrDefault(r => r.RoleName == roleName);
+			if (role == null)
+				return StatusCode(500, "Seçilen rol veritabanında bulunamadı.");
+
 			var user = new User
 			{
 				FullName = dto.FullName,
 				Email = dto.Email,
-				PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password)
+				PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+				RoleId = role.RoleId
 			};
 
 			_context.Users.Add(user);
@@ -67,7 +74,7 @@ namespace WebApi.Controllers
 			new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
 			new Claim(ClaimTypes.Email, user.Email),
 			new Claim("FullName", user.FullName),
-			new Claim(ClaimTypes.Role, user.Role?.RoleName)
+			new Claim(ClaimTypes.Role, user.Role?.RoleName ?? "User")
 		};
 
 			var token = new JwtSecurityToken(

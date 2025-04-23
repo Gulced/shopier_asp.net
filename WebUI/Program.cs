@@ -6,7 +6,7 @@ builder.Services.AddControllersWithViews();
 // HttpClient - WebApi ile konuþmak için
 builder.Services.AddHttpClient("WebApi", client =>
 {
-	client.BaseAddress = new Uri("https://localhost:5001/"); // WebAPI URL'ini buraya yaz
+	client.BaseAddress = new Uri("https://localhost:7022/"); // WebAPI URL'ini buraya yaz
 });
 
 //  Cookie tabanlý kimlik doðrulama

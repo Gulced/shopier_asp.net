@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -21,13 +23,20 @@ namespace WebUI.Controllers
 		public IActionResult Login() => View();
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Login(LoginViewModel model)
 		{
 			if (!ModelState.IsValid)
 				return View(model);
 
 			var client = _httpClientFactory.CreateClient("WebApi");
-			var response = await client.PostAsJsonAsync("api/auth/login", model);
+			var dto = new
+			{
+				Email = model.Email,
+				Password = model.Password
+			};
+
+			var response = await client.PostAsJsonAsync("api/auth/login", dto);
 
 			if (response.IsSuccessStatusCode)
 			{
@@ -42,10 +51,19 @@ namespace WebUI.Controllers
 					Expires = DateTimeOffset.UtcNow.AddHours(1)
 				});
 
-				// 🔍 Token'dan rol çözümle
+				// 🔐 Token'dan Claims çıkar
 				var handler = new JwtSecurityTokenHandler();
 				var jwt = handler.ReadJwtToken(token);
-				var role = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+				var claims = jwt.Claims.ToList();
+				var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+				var principal = new ClaimsPrincipal(identity);
+
+				// 🟢 ASP.NET Core'a login işlemi bildir
+				await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+				// 🎯 Role göre yönlendir
+				var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
 				if (role == "Admin")
 					return RedirectToAction("ProductList", "Admin");
@@ -67,7 +85,13 @@ namespace WebUI.Controllers
 				return View(model);
 
 			var client = _httpClientFactory.CreateClient("WebApi");
-			var response = await client.PostAsJsonAsync("api/auth/register", model);
+			var dto = new
+			{
+				FullName = model.FullName,
+				Email = model.Email,
+				Password = model.Password
+			};
+			var response = await client.PostAsJsonAsync("api/auth/register", dto);
 
 			if (response.IsSuccessStatusCode)
 				return RedirectToAction("Login");
@@ -77,9 +101,12 @@ namespace WebUI.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Logout()
+		public async Task<IActionResult> Logout()
 		{
+			// 🔐 ASP.NET Core logout işlemi
+			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 			Response.Cookies.Delete("access_token");
+
 			return RedirectToAction("Login");
 		}
 	}

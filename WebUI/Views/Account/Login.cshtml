@@ -6,7 +6,9 @@
 
 <h2>Giriş Yapınız</h2>
 
-<form asp-action="Login" method="post">
+<form asp-controller="Account" asp-action="Login" method="post">
+    @Html.AntiForgeryToken() 
+
     <div class="form-group">
         <label asp-for="Email"></label>
         <input asp-for="Email" class="form-control" />
@@ -25,6 +27,7 @@
         <p>Hesabın yok mu? <a asp-action="Register">Kayıt Ol</a></p>
     </div>
 </form>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

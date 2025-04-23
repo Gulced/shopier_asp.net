@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Yeni Profil",
+    "Projects": [
+      {
+        "Path": "web_donem_sonu\\WebApi.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "WebUI\\WebUI.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

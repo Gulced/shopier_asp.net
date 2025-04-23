@@ -4,8 +4,9 @@ namespace WebUI.Models.ViewModels
 {
 	public class RegisterViewModel
 	{
-		[Required(ErrorMessage = "Ad alanı zorunludur.")]
-		public string Name { get; set; }
+		[Required(ErrorMessage = "Ad alanı zorunludur")]
+		[Display(Name = "Ad Soyad")]
+		public string FullName { get; set; }
 
 		[Required(ErrorMessage = "Email alanı zorunludur.")]
 		[EmailAddress(ErrorMessage = "Geçerli bir email giriniz.")]

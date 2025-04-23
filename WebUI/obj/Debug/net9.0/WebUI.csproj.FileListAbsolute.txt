@@ -47,6 +47,7 @@ C:\Users\USER\source\repos\web_donem_sonu\WebUI\obj\Debug\net9.0\WebUI.MvcApplic
 C:\Users\USER\source\repos\web_donem_sonu\WebUI\obj\Debug\net9.0\WebUI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\USER\source\repos\web_donem_sonu\WebUI\obj\Debug\net9.0\WebUI.RazorAssemblyInfo.cache
 C:\Users\USER\source\repos\web_donem_sonu\WebUI\obj\Debug\net9.0\WebUI.RazorAssemblyInfo.cs
+C:\Users\USER\source\repos\web_donem_sonu\WebUI\obj\Debug\net9.0\WebUI.sourcelink.json
 C:\Users\USER\source\repos\web_donem_sonu\WebUI\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\USER\source\repos\web_donem_sonu\WebUI\obj\Debug\net9.0\scopedcss\bundle\WebUI.styles.css
 C:\Users\USER\source\repos\web_donem_sonu\WebUI\obj\Debug\net9.0\scopedcss\projectbundle\WebUI.bundle.scp.css

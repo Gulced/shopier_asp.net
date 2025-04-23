@@ -123,6 +123,7 @@ C:\Users\USER\source\repos\web_donem_sonu\web_donem_sonu\obj\Debug\net9.0\WebApi
 C:\Users\USER\source\repos\web_donem_sonu\web_donem_sonu\obj\Debug\net9.0\WebApi.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\USER\source\repos\web_donem_sonu\web_donem_sonu\obj\Debug\net9.0\WebApi.RazorAssemblyInfo.cache
 C:\Users\USER\source\repos\web_donem_sonu\web_donem_sonu\obj\Debug\net9.0\WebApi.RazorAssemblyInfo.cs
+C:\Users\USER\source\repos\web_donem_sonu\web_donem_sonu\obj\Debug\net9.0\WebApi.sourcelink.json
 C:\Users\USER\source\repos\web_donem_sonu\web_donem_sonu\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\USER\source\repos\web_donem_sonu\web_donem_sonu\obj\Debug\net9.0\scopedcss\bundle\WebApi.styles.css
 C:\Users\USER\source\repos\web_donem_sonu\web_donem_sonu\obj\Debug\net9.0\scopedcss\projectbundle\WebApi.bundle.scp.css

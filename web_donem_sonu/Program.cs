@@ -3,13 +3,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebApi.Data;
+using WebApi.Models.Entities; // <-- Role ve User için gerekli
+using BCrypt.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// DB Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(options =>
 	{
@@ -17,11 +20,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 		{
 			OnMessageReceived = context =>
 			{
-				//  Cookie'den token çek
 				if (context.Request.Cookies.ContainsKey("access_token"))
-				{
 					context.Token = context.Request.Cookies["access_token"];
-				}
 				return Task.CompletedTask;
 			}
 		};
@@ -39,21 +39,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 		};
 	});
 
-//  3. Authorization
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAuthorization();
-
-builder.Services.AddHttpClient("WebApi", client =>
-{
-	client.BaseAddress = new Uri("https://localhost:5001/"); // WebApi'nin adresi
-});
-
-
-//  4. MVC Controller+Views
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-//  5. Middleware pipeline
 if (!app.Environment.IsDevelopment())
 {
 	app.UseExceptionHandler("/Home/Error");
@@ -61,12 +53,41 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(); // <-- static dosyalar (wwwroot için)
+app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication(); //  Authentication middleware EKLENDÝ!
+app.UseAuthentication();
 app.UseAuthorization();
+
+//  Admin kullanýcýyý seed et
+using (var scope = app.Services.CreateScope())
+{
+	var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+	var adminRole = context.Roles.FirstOrDefault(r => r.RoleName == "Admin");
+	if (adminRole == null)
+	{
+		adminRole = new Role { RoleName = "Admin" };
+		context.Roles.Add(adminRole);
+		context.SaveChanges();
+	}
+
+	var adminEmail = "admin@example.com";
+	if (!context.Users.Any(u => u.Email == adminEmail))
+	{
+		var adminUser = new User
+		{
+			FullName = "Sistem Admini",
+			Email = adminEmail,
+			PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin123!"),
+			RoleId = adminRole.RoleId
+		};
+
+		context.Users.Add(adminUser);
+		context.SaveChanges();
+	}
+}
 
 app.MapControllerRoute(
 	name: "default",
