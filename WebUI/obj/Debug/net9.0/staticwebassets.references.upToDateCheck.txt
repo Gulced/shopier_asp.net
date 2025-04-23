@@ -1,0 +1,5 @@
+C:\Users\USER\source\repos\web_donem_sonu\web_donem_sonu\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\USER\source\repos\web_donem_sonu\web_donem_sonu\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\USER\source\repos\web_donem_sonu\web_donem_sonu\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\USER\source\repos\web_donem_sonu\web_donem_sonu\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\USER\source\repos\web_donem_sonu\web_donem_sonu\obj\Debug\net9.0\staticwebassets.build.json

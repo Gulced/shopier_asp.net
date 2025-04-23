@@ -1,0 +1,30 @@
+﻿@model List<WebApi.Models.DTOs.ProductDTO>
+
+@{
+    ViewData["Title"] = "Ürün Yönetimi";
+}
+
+<h2>Ürün Listesi</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>İsim</th>
+            <th>Açıklama</th>
+            <th>Fiyat</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.ProductId</td>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+                <td>@product.Price.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Ürün ekleme/silme butonları sonra eklenecek -->
